@@ -1,30 +1,43 @@
-<script>
-	export let name;
+<script lang="ts">
+  import { Router, Route, Link } from "svelte-navigator";
+  import Login from "./routes/Login.svelte";
+  import PrivateRoute from "./routes/PrivateRoute.svelte";
+  import { user } from "./stores/user";
+
+  function handleLogout() {
+    $user = null;
+  }
 </script>
 
-<main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
-</main>
+<Router>
+  <header>
+    <h1>History</h1>
 
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
+    <nav>
+      <Link to="/">Home</Link>
+      <Link to="about">About</Link>
+      <Link to="profile">Profile</Link>
+    </nav>
+  </header>
 
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
+  <main>
+    <Route path="login">
+      <Login />
+    </Route>
 
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
+    <Route path="/">
+      <h3>Home</h3>
+      <p>Home sweet home...</p>
+    </Route>
+
+    <Route path="about">
+      <h3>About</h3>
+      <p>That's what it's all about!</p>
+    </Route>
+
+    <PrivateRoute path="profile" let:location>
+      <h3>Welcome {$user.username}</h3>
+      <button on:click={handleLogout}>Logout</button>
+    </PrivateRoute>
+  </main>
+</Router>
