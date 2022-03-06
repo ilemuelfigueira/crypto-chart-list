@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { Router, Route, Link } from "svelte-navigator";
-  import Login from "./routes/Login.svelte";
+  import { Router, Route } from "svelte-navigator";
+  import Home from "./routes/Home.svelte";
   import PrivateRoute from "./routes/PrivateRoute.svelte";
   import { user } from "./stores/user";
 
@@ -16,7 +16,7 @@
 
   <main>
     <Route path="login">
-      <Login />
+      <Home />
     </Route>
 
     <Route path="/">
@@ -82,7 +82,7 @@
     right: 0;
     z-index: 1;
 
-    height: 1rem;
+    height: 3rem;
 
     background: var(--clr-primary-dark);
   }
