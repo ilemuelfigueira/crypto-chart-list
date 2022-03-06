@@ -1,46 +1,60 @@
 <script lang="ts">
+  import { onMount } from "svelte";
+
   import { Router, Route } from "svelte-navigator";
+  import { writable } from "svelte/store";
   import Home from "./routes/Home.svelte";
   import PrivateRoute from "./routes/PrivateRoute.svelte";
   import { user } from "./stores/user";
 
+  const isDark = writable<string>("N");
+
   function handleLogout() {
     $user = null;
   }
+
+  onMount(() => {
+    const storagedIsDark = sessionStorage.getItem("isDark");
+
+    if (storagedIsDark) {
+      $isDark = storagedIsDark === "S" ? "S" : "N";
+    }
+  });
 </script>
 
 <Router>
-  <header>
-    <h1>Crypto</h1>
-  </header>
+  <body id="app" dark-theme={$isDark}>
+    <header>
+      <h1>Crypto</h1>
+    </header>
 
-  <main>
-    <Route path="login">
-      <Home />
-    </Route>
+    <main>
+      <Route path="login">
+        <Home />
+      </Route>
 
-    <Route path="/">
-      <h3>Home</h3>
-      <p>Home sweet home...</p>
-    </Route>
+      <Route path="/">
+        <h3>Home</h3>
+        <p>Home sweet home...</p>
+      </Route>
 
-    <Route path="about">
-      <h3>About</h3>
-      <p>That's what it's all about!</p>
-    </Route>
+      <Route path="about">
+        <h3>About</h3>
+        <p>That's what it's all about!</p>
+      </Route>
 
-    <PrivateRoute path="profile" let:location>
-      <h3>Welcome {$user.username}</h3>
-      <button on:click={handleLogout}>Logout</button>
-    </PrivateRoute>
-  </main>
+      <PrivateRoute path="profile" let:location>
+        <h3>Welcome {$user.username}</h3>
+        <button on:click={handleLogout}>Logout</button>
+      </PrivateRoute>
+    </main>
+  </body>
 </Router>
 
 <style>
   :root {
     --clr-primary: #81d4fa;
-    --clr-primary-light: #e1f5fe;
-    --clr-primary-dark: #4fc3f7;
+    --clr-light: #e1f5fe;
     --clr-gray100: #f9fbff;
     --clr-gray150: #f4f6fb;
     --clr-gray200: #eef1f6;
@@ -57,8 +71,28 @@
     --clr-paid-font: #388e3c;
     --clr-link: #2962ff;
 
+    /* // Assumes the browser default, typically `16px` */
+    --font-base: 0.95rem;
+    --font-lg: var(--font-base) * 1.25;
+    --font-sm: var(--font-base) * 0.875;
+    --font-xs: var(--font-base);
+    --font-xl: var(--font-base) * 1.35;
+
+    --lm-shadow-active: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    --lm-shadow-inactive: 0px 16px 30px -10px rgba(0, 0, 0, 0.2);
+
+    --input-focus: #006cff;
+    --input-hover: #ff8c42;
+    --input-error: #b00020;
+    --input-background: #f6f8ff;
+    --border-inactive: #e6e6e6;
+
     /*   border radius */
     --radius: 0.2rem;
+  }
+
+  [dark-theme="S"] {
+    --clr-light: #4fc3f7;
   }
 
   *,
@@ -84,7 +118,7 @@
 
     height: 3rem;
 
-    background: var(--clr-primary-dark);
+    background: var(--clr-light);
   }
 
   main {
