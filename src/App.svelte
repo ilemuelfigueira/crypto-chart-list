@@ -29,24 +29,9 @@
     </header>
 
     <main>
-      <Route path="login">
+      <Route path="/">
         <Home />
       </Route>
-
-      <Route path="/">
-        <h3>Home</h3>
-        <p>Home sweet home...</p>
-      </Route>
-
-      <Route path="about">
-        <h3>About</h3>
-        <p>That's what it's all about!</p>
-      </Route>
-
-      <PrivateRoute path="profile" let:location>
-        <h3>Welcome {$user.username}</h3>
-        <button on:click={handleLogout}>Logout</button>
-      </PrivateRoute>
     </main>
   </body>
 </Router>
@@ -73,10 +58,10 @@
 
     /* // Assumes the browser default, typically `16px` */
     --font-base: 0.95rem;
-    --font-lg: var(--font-base) * 1.25;
-    --font-sm: var(--font-base) * 0.875;
-    --font-xs: var(--font-base);
-    --font-xl: var(--font-base) * 1.35;
+    --font-lg: calc(var(--font-base) * 1.25);
+    --font-sm: calc(var(--font-base) * 0.875);
+    --font-xs: calc(var(--font-base));
+    --font-xl: calc(var(--font-base) * 1.35);
 
     --lm-shadow-active: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     --lm-shadow-inactive: 0px 16px 30px -10px rgba(0, 0, 0, 0.2);
@@ -103,6 +88,13 @@
     padding: 0;
   }
 
+  body,
+  input,
+  button,
+  textarea {
+    font: 400 16px "Mukta", sans-serif;
+  }
+
   header {
     display: flex;
     justify-content: space-between;
@@ -124,9 +116,10 @@
   main {
     margin-top: 3rem;
 
-    background: yellow;
-
     min-height: calc(100vh - 4rem);
     min-width: 100%;
+
+    box-shadow: var(--lm-shadow-active);
+    background: var(--clr-gray200);
   }
 </style>
