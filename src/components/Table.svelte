@@ -4,10 +4,11 @@
 	import type { CryptoTable } from '../types/crypto';
 	import { formatBrl } from '../utils/currency';
 
-	import BiChevronUp from 'svelte-icons-pack/bi/BiChevronDown';
+	import BiChevronUp from 'svelte-icons-pack/bi/BiChevronUp';
 	import BiChevronDown from 'svelte-icons-pack/bi/BiChevronDown';
 
 	import Icon from 'svelte-icons-pack/Icon.svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let orderBy: Writable<string> = writable<string>('Moeda');
 	export let ascOrDesc: Writable<'asc' | 'desc'> = writable<'asc' | 'desc'>('asc');
@@ -45,27 +46,32 @@
 
 		if (!validValues.some((item) => item === order)) return;
 
-		const newValue = {
-			orderBy: order,
-			ascOrDesc: 'asc'
-		};
-
 		const oldValue = {
 			orderBy: $orderBy,
 			ascOrDesc: $ascOrDesc
 		};
 
-		if (newValue.orderBy === oldValue.orderBy) {
+		orderBy.set(order);
+		if (order === oldValue.orderBy) {
 			if ($ascOrDesc === 'asc') {
 				ascOrDesc.set('desc');
+				sort($orderBy, $ascOrDesc);
 			} else {
 				ascOrDesc.set('asc');
+				sort($orderBy, $ascOrDesc);
 			}
 
 			return;
 		}
-		orderBy.set(order);
 		ascOrDesc.set('asc');
+	}
+
+	const dispatch = createEventDispatcher();
+	function sort(orderBy: string, ascOrDesc: 'asc' | 'desc') {
+		dispatch('sort', {
+			orderBy,
+			ascOrDesc
+		});
 	}
 </script>
 

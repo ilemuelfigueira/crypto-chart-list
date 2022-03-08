@@ -10,8 +10,8 @@
 	const data = writable<CryptoTable[]>([]);
 	const isLoading = writable<boolean>(false);
 
-	const orderBy = writable<string>('Moeda');
-	const ascOrDesc = writable<'asc' | 'desc'>('asc');
+	const orderBy = writable<string>('Capitalização de Mercado');
+	const ascOrDesc = writable<'asc' | 'desc'>('desc');
 
 	function searializeCryptoResponseToCryptoTable(value: CryptoResponse[]): CryptoTable[] {
 		return value.map<CryptoTable>((item) => ({
@@ -72,7 +72,7 @@
 		handleSearchData('');
 	});
 
-	$: $orderBy && $ascOrDesc, handleSearchData($busca);
+	// $: $orderBy && $ascOrDesc, handleSearchData($busca);
 </script>
 
 <main>
