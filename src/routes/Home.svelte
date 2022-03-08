@@ -93,7 +93,7 @@
   </div>
   {#if $isLoading === false && $data.length > 0}
     <Table {orderBy} {ascOrDesc} data={$data} />
-  {#else }
+  {:else}
     <span>Carregando..</span>
   {/if}
 </main>
