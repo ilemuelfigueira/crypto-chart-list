@@ -1,103 +1,168 @@
-<body>
-  <table>
-    <thead>
-      <tr>
-        <th>Moeda</th>
-        <th>Preço</th>
-        <th>1h</th>
-        <th>24h</th>
-        <th>7d</th>
-        <th>Volume em 24h</th>
-        <th>Capitalização de Mercado</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div>
-            <img
-              src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
-              alt=""
-            />
-            BTC
-          </div>
-        </td>
-        <td>US$ 39.002,24</td>
-        <td>0.1%</td>
-        <td>0.4%</td>
-        <td>1.2%</td>
-        <td>US$ 13.472.106.589</td>
-        <td>US$ 750.092.925.509</td>
-      </tr>
-      <tr>
-        <td>
-          <div>
-            <img
-              src="https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579"
-              alt=""
-            />
-            BTC
-          </div>
-        </td>
-        <td>US$ 39.002,24</td>
-        <td>0.1%</td>
-        <td>0.4%</td>
-        <td>1.2%</td>
-        <td>US$ 13.472.106.589</td>
-        <td>US$ 750.092.925.509</td>
-      </tr>
-    </tbody>
-  </table>
-</body>
+<script lang="ts">
+  import { onMount } from "svelte";
+
+  import { writable } from "svelte/store";
+
+  import Table from "../components/Table.svelte";
+  import { getCryptoData } from "../services/api";
+  import type { CryptoResponse, CryptoTable } from "../types/crypto";
+
+  const busca = writable("");
+  const data = writable<CryptoTable[]>([]);
+  const isLoading = writable<boolean>(false);
+
+  const orderBy = writable<string>("Moeda");
+  const ascOrDesc = writable<"asc" | "desc">("asc");
+
+  function searializeCryptoResponseToCryptoTable(
+    value: CryptoResponse[]
+  ): CryptoTable[] {
+    return value.map<CryptoTable>((item) => ({
+      "1h": `${
+        item.price_change_percentage_1h_in_currency
+          ? item.price_change_percentage_1h_in_currency.toPrecision(2)
+          : 0
+      }%`,
+      "24h": `${
+        item.price_change_percentage_24h_in_currency
+          ? item.price_change_percentage_24h_in_currency.toPrecision(2)
+          : 0
+      }%`,
+      "7d": `${
+        item.price_change_percentage_7d_in_currency
+          ? item.price_change_percentage_7d_in_currency.toPrecision(2)
+          : 0
+      }%`,
+      "Capitalização de Mercado": item.market_cap,
+      "Volume em 24h": item.market_cap_change_24h,
+      id: item.id,
+      img: item.image,
+      value: item.current_price,
+      symbol: item.symbol,
+    }));
+  }
+
+  function serializeOrderBy(orderBy: string, ascOrDesc: string) {
+    switch (orderBy) {
+      case "Moeda":
+        return "id_" + ascOrDesc;
+      case "Capitalização de Mercado":
+        return "market_cap_" + ascOrDesc;
+      case "Volume em 24h":
+        return "volume_" + ascOrDesc;
+      default:
+        return "market_cap_" + ascOrDesc;
+    }
+  }
+
+  async function handleSearchData(search: string = "") {
+    try {
+      isLoading.set(true);
+      const response = await getCryptoData(
+        [search],
+        serializeOrderBy($orderBy, $ascOrDesc)
+      );
+
+      const serializedResponse =
+        searializeCryptoResponseToCryptoTable(response);
+
+      data.set(serializedResponse);
+    } catch (error) {
+      console.error(error.message);
+      throw new Error(error.message);
+    } finally {
+      isLoading.set(false);
+    }
+  }
+
+  onMount(() => {
+    handleSearchData("");
+  });
+
+  $: $orderBy && $ascOrDesc, handleSearchData($busca);
+</script>
+
+<main>
+  <div class="input">
+    <input
+      bind:value={$busca}
+      type="text"
+      placeholder="Digite o nome de alguma moeda"
+    />
+    <button on:click={() => handleSearchData($busca)}>Buscar</button>
+  </div>
+  {#if $isLoading === false && $data.length > 0}
+    <Table {orderBy} {ascOrDesc} data={$data} />
+  {#else }
+    <span>Carregando..</span>
+  {/if}
+</main>
 
 <style>
-  body {
+  main {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    gap: 1rem;
+
+    padding: 1rem;
+
+    background: var(--clr-light);
+  }
+
+  main .input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
 
     width: 100%;
   }
 
-  body table {
-    border-collapse: collapse;
-    box-shadow: var(--lm-shadow-active);
-    background: white;
-    text-align: center;
-    overflow: hidden;
+  main .input input {
+    width: 100%;
 
-    min-width: 500px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    outline: none;
+
+    padding: 0.7rem;
+
+    color: var(--clr-gray700);
+    font-weight: 600;
+    font-size: var(--font-lg);
   }
 
-  body table thead {
-    box-shadow: var(--lm-shadow-active);
+  main .input input::placeholder {
+    font-weight: 600;
+    font-size: var(--font-lg);
   }
 
-  body table th {
-    padding: 1rem 2rem;
+  main .input button {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+
+    outline: none;
+
     text-transform: uppercase;
-    letter-spacing: 0.1rem;
-    font-size: var(--font-sm);
-    font-weight: 900;
-  }
 
-  body table td {
-    padding: 1rem 2rem;
-  }
+    padding: 0.5rem;
+    width: 10rem;
 
-  body table tbody tr td div {
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-  }
+    cursor: pointer;
 
-  body table tbody tr td img {
-    width: 1rem;
-    height: 1rem;
-    aspect-ratio: 4/3;
-  }
+    background: var(--clr-primary);
+    color: var(--clr-font);
 
-  body table tbody tr:nth-child(even) {
-    background: var(--clr-gray200);
+    font-weight: 600;
+    font-size: var(--font-lg);
   }
 </style>
