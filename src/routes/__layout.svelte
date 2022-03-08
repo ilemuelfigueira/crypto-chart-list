@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Header from '$lib/header/Header.svelte';
-	import '../app.css';
-	// import 'boxicons';
+	import '../app.scss';
+
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
+	import Header from '$lib/header/Header.svelte';
 
-	const isDark = writable<string>('N');
+	const isDark = writable<string>('S');
 
 	onMount(() => {
 		const storagedIsDark = sessionStorage.getItem('isDark');
@@ -16,24 +16,32 @@
 	});
 </script>
 
-<Header />
+<div id="app" dark-theme={$isDark}>
+	<Header />
 
-<main dark-theme={$isDark}>
-	<slot />
-</main>
+	<main>
+		<slot />
+	</main>
 
-<footer>
-	<p>visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to learn SvelteKit</p>
-</footer>
+	<footer>
+		<p>
+			Visit <a href="https://github.com/LemuelFigueira">Lemuel Figueira</a> to see more projects
+		</p>
+	</footer>
+</div>
 
 <style>
+	#app {
+		min-height: 100vh;
+		min-width: 100vw;
+
+		background: var(--clr-light);
+	}
 	main {
 		flex: 1;
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
 		width: 100%;
-		max-width: 1024px;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}
@@ -44,6 +52,8 @@
 		justify-content: center;
 		align-items: center;
 		padding: 40px;
+
+		background: var(--clr-light);
 	}
 
 	footer a {

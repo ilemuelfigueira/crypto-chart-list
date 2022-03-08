@@ -4,6 +4,11 @@
 	import type { CryptoTable } from '../types/crypto';
 	import { formatBrl } from '../utils/currency';
 
+	import BiChevronUp from 'svelte-icons-pack/bi/BiChevronDown';
+	import BiChevronDown from 'svelte-icons-pack/bi/BiChevronDown';
+
+	import Icon from 'svelte-icons-pack/Icon.svelte';
+
 	export let orderBy: Writable<string> = writable<string>('Moeda');
 	export let ascOrDesc: Writable<'asc' | 'desc'> = writable<'asc' | 'desc'>('asc');
 
@@ -74,10 +79,10 @@
 							<span>{label}</span>
 							{#if $orderBy === label}
 								{#if $ascOrDesc === 'asc'}
-									<box-icon type="solid" name="chevron-up" />
+									<Icon className="icon" size="24" src={BiChevronDown} />
 								{/if}
 								{#if $ascOrDesc === 'desc'}
-									<box-icon type="solid" name="chevron-down" />
+									<Icon className="icon" size="24" src={BiChevronUp} />
 								{/if}
 							{/if}
 						</div>
@@ -113,7 +118,11 @@
 	</table>
 </body>
 
-<style>
+<style lang="scss">
+	.icon {
+		font-size: 2rem;
+	}
+
 	body {
 		width: 100%;
 		max-height: 60vh;
