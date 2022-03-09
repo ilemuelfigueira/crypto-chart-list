@@ -1714,7 +1714,7 @@ export interface Ticker {
 	target_coin_id: string;
 }
 
-export interface Crypto {
+export type Crypto = {
 	id: string;
 	symbol: string;
 	name: string;
@@ -1747,4 +1747,4 @@ export interface Crypto {
 	status_updates: any[];
 	last_updated: Date;
 	tickers: Ticker[];
-}
+};

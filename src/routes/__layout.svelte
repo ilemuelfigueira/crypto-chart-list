@@ -32,8 +32,8 @@
 
 <style>
 	#app {
-		min-height: 100vh;
-		min-width: 100vw;
+		/* min-height: 100vh; */
+		/* min-width: 100vw; */
 
 		background: var(--clr-light);
 	}
@@ -42,6 +42,7 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+		max-width: 100vw;
 		margin: 0 auto;
 		box-sizing: border-box;
 	}

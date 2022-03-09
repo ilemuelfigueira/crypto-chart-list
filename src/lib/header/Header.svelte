@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-
 	import FaBrandsBitcoin from 'svelte-icons-pack/fa/FaBrandsBitcoin';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 </script>
@@ -24,8 +22,6 @@
 		background: var(--clr-light);
 
 		padding: 1rem;
-
-		width: 100vw;
 	}
 
 	a,
