@@ -3,7 +3,7 @@
 	import { writable } from 'svelte/store';
 
 	import Table from '../components/Table.svelte';
-	import { getCryptoData } from '../services/api';
+	import { getCryptoData } from '../services/crypto';
 	import type { CryptoResponse, CryptoTable } from '../types/crypto';
 
 	const busca = writable('');
