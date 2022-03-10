@@ -32,10 +32,15 @@
 
 <style>
 	#app {
-		/* min-height: 100vh; */
+		min-height: 100vh;
 		/* min-width: 100vw; */
 
 		background: var(--clr-light);
+
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
 	}
 	main {
 		flex: 1;
@@ -48,11 +53,14 @@
 	}
 
 	footer {
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		padding: 40px;
+
+		align-self: flex-end;
 
 		background: var(--clr-light);
 	}

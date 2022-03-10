@@ -45,13 +45,13 @@ button:focus {
 }
 
 /* hide scrollbar but allow scrolling */
-[hide-scroll='S'] {
+[hide-scroll="S"] {
 	-ms-overflow-style: none; /* for Internet Explorer, Edge */
 	scrollbar-width: none; /* for Firefox */
 	overflow-y: scroll;
 }
 
-[hide-scroll='S']::-webkit-scrollbar {
+[hide-scroll="S"]::-webkit-scrollbar {
 	display: none; /* for Chrome, Safari, and Opera */
 }
 
@@ -106,7 +106,7 @@ button {
 	--radius: 0.2rem;
 }
 
-[dark-theme='S'] {
+[dark-theme="S"] {
 	--clr-light: #4fc3f7;
 	--clr-font: var(--clr-gray100);
 }
@@ -120,7 +120,7 @@ button {
 }
 
 * {
-	font-family: 'Mukta', sans-serif;
+	font-family: "Mukta", sans-serif;
 	font-weight: 400;
 	padding: 0;
 	color: var(--clr-font);

@@ -18,6 +18,7 @@
 	header {
 		display: flex;
 		justify-content: space-between;
+		align-self: flex-start;
 
 		background: var(--clr-light);
 
