@@ -12,6 +12,7 @@
 
 	export let orderBy: Writable<string> = writable<string>('Moeda');
 	export let ascOrDesc: Writable<'asc' | 'desc'> = writable<'asc' | 'desc'>('asc');
+	export let isLoading: Writable<boolean> = writable<boolean>(false);
 
 	export let data: CryptoTable[] = [];
 
@@ -55,27 +56,28 @@
 		if (order === oldValue.orderBy) {
 			if ($ascOrDesc === 'asc') {
 				ascOrDesc.set('desc');
-				sort($orderBy, $ascOrDesc);
+				sort();
 			} else {
 				ascOrDesc.set('asc');
-				sort($orderBy, $ascOrDesc);
+				sort();
 			}
 
 			return;
 		}
 		ascOrDesc.set('asc');
+		sort();
 	}
 
 	const dispatch = createEventDispatcher();
-	function sort(orderBy: string, ascOrDesc: 'asc' | 'desc') {
-		dispatch('sort', {
-			orderBy,
-			ascOrDesc
-		});
+	function sort() {
+		dispatch('sort');
 	}
 </script>
 
 <body hide-scroll="S">
+	{#if $isLoading === true}
+		Carregando...
+	{/if}
 	<table cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>

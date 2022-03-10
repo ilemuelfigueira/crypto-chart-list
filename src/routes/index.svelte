@@ -54,7 +54,7 @@
 
 	async function handleSearchData(search: string = '') {
 		try {
-			// isLoading.set(true);
+			isLoading.set(true);
 			const response = await getCryptoData([search], serializeOrderBy($orderBy, $ascOrDesc));
 
 			const serializedResponse = searializeCryptoResponseToCryptoTable(response);
@@ -64,15 +64,13 @@
 			console.error(error.message);
 			throw new Error(error.message);
 		} finally {
-			// isLoading.set(false);
+			isLoading.set(false);
 		}
 	}
 
 	onMount(() => {
 		handleSearchData('');
 	});
-
-	// $: $orderBy && $ascOrDesc, handleSearchData($busca);
 </script>
 
 <main>
@@ -80,8 +78,14 @@
 		<input bind:value={$busca} type="text" placeholder="Digite o nome de alguma moeda" />
 		<button on:click={() => handleSearchData($busca)}>Buscar</button>
 	</div>
-	{#if $isLoading === false && $data.length > 0}
-		<Table {orderBy} {ascOrDesc} data={$data} />
+	{#if $data.length > 0}
+		<Table
+			{isLoading}
+			{orderBy}
+			{ascOrDesc}
+			data={$data}
+			on:sort={() => handleSearchData($busca)}
+		/>
 	{:else}
 		<span>Carregando..</span>
 	{/if}
