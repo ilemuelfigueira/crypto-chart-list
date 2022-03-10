@@ -13,7 +13,7 @@
 
 	export const id: Writable<string> = writable<string>();
 	export const currency: Writable<string> = writable<'BRL' | 'USD'>('BRL');
-	export const days: Writable<number> = writable<number>(30);
+	export const days: Writable<string> = writable<string>('1d');
 
 	const crypto = writable<Crypto>();
 	const cryptoChartData = writable<CryptoChart>();
@@ -21,12 +21,19 @@
 	const chartLabels = writable<string[]>([]);
 	const chartValues = writable<number[]>([]);
 
+	const daysOptions = writable<string[]>(['1d', '7d', '14d', '30d']);
+	const isLoading = writable<boolean>(false);
+
 	function handleLoadUrlParams() {
 		const query = $page.url.searchParams.get('id');
 
 		const result = query || '';
 
 		id.set(result);
+	}
+
+	function formatDayString(value: string) {
+		return value.replace('d', '');
 	}
 
 	function serializeCryptoChartLabels(value: CryptoChart) {
@@ -54,19 +61,23 @@
 	}
 
 	async function handleLoadCryptoChart() {
-		const response = await getCryptoCharts($currency, $id, $days);
+		const response = await getCryptoCharts($currency, $id, formatDayString($days));
 
 		cryptoChartData.set(response);
 	}
 
-	onMount(async () => {
-		const urlParamsPromise = handleLoadUrlParams();
-		const cryptoHeaderPromise = handleLoadCryptoHeader();
-		const cryptoChartPromise = handleLoadCryptoChart();
-
-		await Promise.all([urlParamsPromise, cryptoHeaderPromise, cryptoChartPromise]);
+	async function handleLoadCoin() {
+		await handleLoadCryptoHeader();
+		await handleLoadCryptoChart();
 
 		serializeCryptoChart();
+	}
+
+	onMount(async () => {
+		const urlParamsPromise = handleLoadUrlParams();
+		const coinPromise = handleLoadCoin();
+
+		await Promise.all([urlParamsPromise, coinPromise]);
 	});
 </script>
 
@@ -83,12 +94,22 @@
 			</div>
 
 			<div class="days">
-				<span>1d</span>
-				<span>7d</span>
-				<span>30d</span>
+				{#each $daysOptions as day}
+					<span
+						cursor-pointer
+						data-selected={$days === day ? 'S' : 'N'}
+						on:click={async () => {
+							days.set(day);
+							isLoading.set(true);
+							await handleLoadCryptoChart();
+							serializeCryptoChart();
+							isLoading.set(false);
+						}}>{day}</span
+					>
+				{/each}
 			</div>
 		</div>
-		{#if $chartLabels.length > 0 && $chartValues.length > 0}
+		{#if $chartLabels.length > 0 && $chartValues.length > 0 && $isLoading === false}
 			<Graph {chartLabels} {chartValues} />
 		{/if}
 	{/if}
@@ -101,5 +122,42 @@
 	main .header {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.days {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		padding: 2px;
+		height: max-content;
+
+		gap: 2px;
+
+		background-color: var(--clr-gray200);
+
+		border-radius: var(--br);
+
+		& > span:first-child {
+			border-top-left-radius: var(--br);
+			border-bottom-left-radius: var(--br);
+		}
+
+		& > span:last-child {
+			border-top-right-radius: var(--br);
+			border-bottom-right-radius: var(--br);
+		}
+
+		& > span {
+			padding: 0.5rem;
+
+			margin: 0;
+			height: auto;
+			background: var(--clr-primary);
+		}
+	}
+
+	[data-selected='S'] {
+		filter: brightness(1.2);
 	}
 </style>

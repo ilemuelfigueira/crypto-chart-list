@@ -260,8 +260,4 @@
 	[data-order='Capitalização de Mercado']:hover {
 		filter: brightness(0.8);
 	}
-
-	[cursor-pointer] {
-		cursor: pointer;
-	}
 </style>

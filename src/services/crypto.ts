@@ -21,7 +21,7 @@ export async function getCryptoData(
 export async function getCryptoCharts(
 	currency: string,
 	cryptoName: string,
-	days: number
+	days: string
 ): Promise<CryptoChart> {
 	const { data } = await api.get(
 		`/coins/${cryptoName}/market_chart?vs_currency=${currency}&days=${days}`
