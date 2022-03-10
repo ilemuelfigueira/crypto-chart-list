@@ -13,6 +13,7 @@
 
 	#loading {
 		position: relative;
+		width: 100%;
 	}
 
 	#loading::after {
