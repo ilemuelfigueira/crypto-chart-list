@@ -126,10 +126,6 @@
 </body>
 
 <style lang="scss">
-	.icon {
-		font-size: 2rem;
-	}
-
 	body {
 		width: 100%;
 		max-height: 60vh;
