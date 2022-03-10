@@ -110,7 +110,7 @@
 			</div>
 		</div>
 		{#if $chartLabels.length > 0 && $chartValues.length > 0 && $isLoading === false}
-			<Graph {chartLabels} {chartValues} />
+			<Graph {chartLabels} {chartValues} label={$id} />
 		{/if}
 	{/if}
 </main>

@@ -24,7 +24,7 @@
 				labels: $chartLabels,
 				datasets: [
 					{
-						label: label,
+						label: label.toUpperCase(),
 						backgroundColor: gradientFill,
 						borderColor: '#8a2be2',
 						data: $chartValues,
