@@ -9,7 +9,7 @@
 
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import { createEventDispatcher } from 'svelte';
-	import Loading from './Loading.svelte';
+	import Loading from './LinearLoading.svelte';
 
 	export let orderBy: Writable<string> = writable<string>('Moeda');
 	export let ascOrDesc: Writable<'asc' | 'desc'> = writable<'asc' | 'desc'>('asc');
@@ -18,7 +18,6 @@
 	export let data: CryptoTable[] = [];
 
 	const labels = [
-		'',
 		'Moeda',
 		'',
 		'Preço',
@@ -73,6 +72,10 @@
 	function sort() {
 		dispatch('sort');
 	}
+
+	function goToCoinPage(id: string) {
+		window.location.assign(`/coin?id=${id}`);
+	}
 </script>
 
 <body hide-scroll="S">
@@ -100,12 +103,17 @@
 		<tbody>
 			{#each data as item}
 				<tr>
-					<td>
-						<img src={item.img} alt="" />
-					</td>
-					<td>
-						<div href="https://google.com" target="_blank">
-							<span data-label="name">{item.id}</span>
+					<td cursor-pointer on:click={() => goToCoinPage(item.id)}>
+						<div
+							tooltip-string="Detalhar"
+							tooltip-align="right"
+							href="https://google.com"
+							target="_blank"
+						>
+							<img src={item.img} alt="" />
+							<span data-label="name">
+								{item.id}
+							</span>
 						</div>
 					</td>
 					<td data-label="symbol">{item.symbol} </td>
@@ -251,5 +259,9 @@
 	[data-order='Volume em 24h']:hover,
 	[data-order='Capitalização de Mercado']:hover {
 		filter: brightness(0.8);
+	}
+
+	[cursor-pointer] {
+		cursor: pointer;
 	}
 </style>

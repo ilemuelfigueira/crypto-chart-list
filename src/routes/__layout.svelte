@@ -3,7 +3,7 @@
 
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
-	import Header from '$lib/header/Header.svelte';
+	import Header from '../components/Header.svelte';
 
 	const isDark = writable<string>('S');
 

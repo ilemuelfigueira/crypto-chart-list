@@ -1,5 +1,5 @@
 import type { AxiosRequestConfig } from 'axios';
-import type { Crypto, CryptoResponse } from 'src/types/crypto';
+import type { Crypto, CryptoChart, CryptoResponse } from 'src/types/crypto';
 import { api } from './api';
 
 export async function getCryptoData(
@@ -18,12 +18,16 @@ export async function getCryptoData(
 	return data;
 }
 
-export async function getCryptoCharts(currency: string, cryptoName: string, days: string) {
-	const { data, status } = await api.get(
+export async function getCryptoCharts(
+	currency: string,
+	cryptoName: string,
+	days: number
+): Promise<CryptoChart> {
+	const { data } = await api.get(
 		`/coins/${cryptoName}/market_chart?vs_currency=${currency}&days=${days}`
 	);
 
-	return { data, status };
+	return data;
 }
 
 export async function getCryptoById(id: string): Promise<Crypto> {

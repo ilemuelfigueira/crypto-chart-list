@@ -86,6 +86,8 @@ button {
 	--clr-font: var(--clr-gray700);
 	--clr-link: #2962ff;
 
+	--br: 5px;
+
 	/* // Assumes the browser default, typically `16px` */
 	--font-base: 0.95rem;
 	--font-lg: calc(var(--font-base) * 1.25);
@@ -124,4 +126,49 @@ button {
 	font-weight: 400;
 	padding: 0;
 	color: var(--clr-font);
+}
+
+[tooltip-string][tooltip-align="left"] {
+	&:hover:after {
+		top: 0 !important;
+		bottom: 0 !important;
+		left: 0 !important;
+	}
+}
+[tooltip-string][tooltip-align="right"] {
+	&:hover:after {
+		top: 0 !important;
+		bottom: 0 !important;
+		right: 0 !important;
+	}
+}
+[tooltip-string][tooltip-align="top"] {
+	&:hover:after {
+		top: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+	}
+}
+[tooltip-string][tooltip-align] {
+	position: relative;
+
+	&::before {
+		content: "";
+		display: none;
+	}
+
+	&:hover::after {
+		content: attr(tooltip-string);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		font-size: var(--font-small);
+		border-radius: var(--br);
+		background: var(--clr-primary);
+		width: max-content;
+		padding: 0.5rem;
+		text-align: center;
+		z-index: 99;
+	}
 }

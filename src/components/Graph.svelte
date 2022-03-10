@@ -1,13 +1,14 @@
 <script lang="ts">
 	import { Chart } from 'chart.js';
 	import { onMount } from 'svelte';
+	import { writable, type Writable } from 'svelte/store';
 
-	export let chartValues = [191744.4420445337, 191503.87712139543, 191492.3220022162];
-	let chartLabels = ['07/03 17:30', '07/03 17:34', '07/03 17:39'];
+	export let chartValues: Writable<number[]> = writable<number[]>([]);
+	export let chartLabels: Writable<string[]> = writable<string[]>([]);
+	export let label = 'Crypto';
+
 	let ctx: any;
 	let chartCanvas: HTMLCanvasElement;
-
-	export let label = 'Crypto';
 
 	onMount(async () => {
 		ctx = chartCanvas.getContext('2d');
@@ -20,13 +21,13 @@
 		new Chart(ctx, {
 			type: 'line',
 			data: {
-				labels: chartLabels,
+				labels: $chartLabels,
 				datasets: [
 					{
 						label: label,
 						backgroundColor: gradientFill,
 						borderColor: '#8a2be2',
-						data: chartValues,
+						data: $chartValues,
 						fill: true,
 						tension: 0.1
 					}
