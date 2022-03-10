@@ -9,6 +9,7 @@
 
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import Loading from './Loading.svelte';
 
 	export let orderBy: Writable<string> = writable<string>('Moeda');
 	export let ascOrDesc: Writable<'asc' | 'desc'> = writable<'asc' | 'desc'>('asc');
@@ -75,9 +76,7 @@
 </script>
 
 <body hide-scroll="S">
-	{#if $isLoading === true}
-		Carregando...
-	{/if}
+	<Loading {isLoading} />
 	<table cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
