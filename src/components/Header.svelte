@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FaBrandsBitcoin from 'svelte-icons-pack/fa/FaBrandsBitcoin';
+	import BiSolidStore from 'svelte-icons-pack/bi/BiSolidStore';
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 
 	import BiMoon from 'svelte-icons-pack/bi/BiMoon';
@@ -14,8 +14,8 @@
 		<div class="left">
 			<a href="/">
 				<div is-dark>
-					<Icon size="36" src={FaBrandsBitcoin} />
-					<span>Bitcoin</span>
+					<Icon size="36" src={BiSolidStore} />
+					<span>Crypto Market</span>
 				</div>
 			</a>
 		</div>
