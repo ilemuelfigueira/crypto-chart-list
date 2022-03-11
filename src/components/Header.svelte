@@ -13,7 +13,7 @@
 	<div class="corner">
 		<div class="left">
 			<a href="/">
-				<div>
+				<div is-dark>
 					<Icon size="36" src={FaBrandsBitcoin} />
 					<span>Bitcoin</span>
 				</div>
