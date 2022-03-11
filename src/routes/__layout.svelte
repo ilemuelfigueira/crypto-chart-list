@@ -5,6 +5,7 @@
 	import { onMount, setContext } from 'svelte';
 
 	import Header from '../components/Header.svelte';
+	import { isMounting } from '../stores/mount';
 
 	const isDark = writable<string>('N');
 
@@ -22,30 +23,36 @@
 
 	function handleChangeTheme() {
 		isDark.update((old: string) => (old === 'S' ? 'N' : 'S'));
+
+		sessionStorage.setItem('isDark', $isDark);
 	}
 
 	onMount(() => {
 		const storagedIsDark = sessionStorage.getItem('isDark');
 
 		if (storagedIsDark) {
-			$isDark = storagedIsDark === 'S' ? 'S' : 'N';
+			$isDark = storagedIsDark;
 		}
+
+		isMounting.set(false);
 	});
 </script>
 
-<div id="app" dark-theme={$isDark}>
-	<Header />
+{#if $isMounting === false}
+	<div id="app" dark-theme={$isDark}>
+		<Header />
 
-	<main>
-		<slot />
-	</main>
+		<main>
+			<slot />
+		</main>
 
-	<footer>
-		<p>
-			Visit <a href="https://github.com/LemuelFigueira">Lemuel Figueira</a> to see more projects
-		</p>
-	</footer>
-</div>
+		<footer>
+			<p>
+				Visit <a href="https://github.com/LemuelFigueira">Lemuel Figueira</a> to see more projects
+			</p>
+		</footer>
+	</div>
+{/if}
 
 <style>
 	@import '../app.module.scss';
