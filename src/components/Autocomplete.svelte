@@ -35,7 +35,7 @@
 	$: options, console.log('options', options);
 </script>
 
-<div class="auto-complete">
+<div class="auto-complete" on:blur={clearInput}>
 	<input bind:value={$busca} type="text" placeholder="Digite o nome de alguma moeda" />
 	{#if $busca !== ''}
 		<div class="items">
