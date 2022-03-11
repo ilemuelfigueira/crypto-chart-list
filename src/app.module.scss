@@ -14,14 +14,6 @@ button:disabled {
 	color: #999;
 }
 
-button:not(:disabled):active {
-	background-color: #ddd;
-}
-
-button:focus {
-	border-color: #666;
-}
-
 /* Works on Firefox */
 * {
 	scrollbar-width: thin;
@@ -74,7 +66,7 @@ button {
 
 :root {
 	--clr-primary: #d33a02;
-	--clr-light: #e1f5fe;
+	--clr-light: #fff;
 	--clr-gray100: #f9fbff;
 	--clr-gray150: #f4f6fb;
 	--clr-gray200: #eef1f6;
@@ -111,7 +103,7 @@ button {
 }
 
 [dark-theme="S"] {
-	--clr-light: #4f7180;
+	--clr-light: #0b032d;
 	--clr-font: var(--clr-gray100);
 }
 
@@ -189,4 +181,21 @@ button {
 		color: red;
 		fill: red;
 	}
+}
+
+button {
+	outline: none;
+	border: none;
+	background: transparent;
+
+	user-select: none;
+	-webkit-tap-highlight-color: transparent;
+}
+
+input,
+textarea,
+button,
+select,
+a {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

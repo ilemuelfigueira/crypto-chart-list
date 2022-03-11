@@ -1,16 +1,30 @@
 <script lang="ts">
 	export const ssr = false;
 
-	import { writable } from 'svelte/store';
+	import { writable, type Writable } from 'svelte/store';
 	import { onMount, setContext } from 'svelte';
 
 	import Header from '../components/Header.svelte';
 
 	const isDark = writable<string>('N');
 
-	setContext('isDark', {
-		isDark: $isDark === 'S'
+	setContext<{
+		context: {
+			isDark: Writable<string>;
+			handleChangeTheme: () => void;
+		};
+	}>('isDark', {
+		context: {
+			handleChangeTheme,
+			isDark
+		}
 	});
+
+	function handleChangeTheme() {
+		isDark.update((old: string) => (old === 'S' ? 'N' : 'S'));
+
+		setContext('isDark', { isDark });
+	}
 
 	onMount(() => {
 		const storagedIsDark = sessionStorage.getItem('isDark');

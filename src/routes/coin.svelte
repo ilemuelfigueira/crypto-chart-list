@@ -23,7 +23,7 @@
 
 	export const id: Writable<string> = writable<string>();
 	export const currency: Writable<string> = writable<'BRL' | 'USD'>('USD');
-	export const days: Writable<string> = writable<string>('1d');
+	export const days: Writable<string> = writable<string>('1D');
 
 	const crypto = writable<Crypto>();
 	const cryptoChartData = writable<CryptoChart>();
@@ -150,7 +150,7 @@
 			</div>
 		</div>
 		{#if $chartLabels.length > 0 && $chartValues.length > 0 && $isLoading === false}
-			<Graph {chartLabels} {chartValues} label={$id} />
+			<Graph {chartLabels} {chartValues} label={'Preço de acordo com o período selecionado'} />
 		{/if}
 	{/if}
 </main>

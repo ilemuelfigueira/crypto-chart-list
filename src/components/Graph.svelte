@@ -7,12 +7,9 @@
 	export let chartLabels: Writable<string[]> = writable<string[]>([]);
 	export let label = 'Crypto';
 	export let backgroundColor = '#D33A02';
-	export let borderColor = '#D33A02aa';
+	export let borderColor = '#D33a02aa';
 
-	const { isDark } = getContext('isDark');
 	const { formatCurrency = () => '' } = getContext('currency');
-
-	let fontColor = isDark ? '#fff' : '#000';
 
 	let ctx: any;
 	let chartCanvas: HTMLCanvasElement;
@@ -31,7 +28,7 @@
 				labels: $chartLabels,
 				datasets: [
 					{
-						label: label.toUpperCase(),
+						label: label,
 						backgroundColor: gradientFill,
 						borderColor: `${borderColor}ff`,
 						data: $chartValues,
@@ -48,7 +45,6 @@
 				},
 				legend: {
 					labels: {
-						fontColor: fontColor,
 						fontSize: 16
 					}
 				},
@@ -56,7 +52,6 @@
 					yAxes: [
 						{
 							ticks: {
-								fontColor: fontColor,
 								callback: formatCurrency
 								// fontSize: 18
 								// stepSize: 1
@@ -67,7 +62,6 @@
 					xAxes: [
 						{
 							ticks: {
-								fontColor: fontColor,
 								fontSize: 8
 								// callback: () => ''
 								// stepSize: 0.5
