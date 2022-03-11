@@ -48,6 +48,18 @@ export type CryptoChart = {
 	total_volumes: number[][];
 };
 
+export type CryptoOptionsResponseCoins = {
+	id: string;
+	name: string;
+	symbol: string;
+	market_cap_rank?: number;
+	thumb: string;
+	large: string;
+};
+export type CryptoOptionsResponse = {
+	coins: CryptoOptionsResponseCoins[];
+};
+
 export interface Platforms {
 	'': string;
 }

@@ -1,17 +1,22 @@
 <script lang="ts">
+	import Autocomplete from '../components/Autocomplete.svelte';
+
 	import { onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
 	import Table from '../components/Table.svelte';
-	import { getCryptoData } from '../services/crypto';
-	import type { CryptoResponse, CryptoTable } from '../types/crypto';
+	import { getCryptoData, getCryptoOptions } from '../services/crypto';
+	import type { CryptoOptionsResponseCoins, CryptoResponse, CryptoTable } from '../types/crypto';
+	import type { GenericOption } from 'src/types';
+	import { goto } from '$app/navigation';
 
-	const busca = writable('');
 	const data = writable<CryptoTable[]>([]);
 	const isLoading = writable<boolean>(false);
 
 	const orderBy = writable<string>('Capitalização de Mercado');
 	const ascOrDesc = writable<'asc' | 'desc'>('desc');
+
+	const cryptoOptions = writable<GenericOption[]>([]);
 
 	function searializeCryptoResponseToCryptoTable(value: CryptoResponse[]): CryptoTable[] {
 		return value.map<CryptoTable>((item) => ({
@@ -67,6 +72,24 @@
 		}
 	}
 
+	function serializeCryptoOptions(response: CryptoOptionsResponseCoins[]) {
+		return response.map<GenericOption>((item) => ({
+			label: item.name,
+			value: item.id,
+			img: item.thumb
+		}));
+	}
+
+	async function handleGetCryptoOptions(value: string = '') {
+		const response = await getCryptoOptions(value);
+
+		const serializedResponse = serializeCryptoOptions(response.coins);
+
+		console.log('serializedResponse', serializedResponse);
+
+		cryptoOptions.set(serializedResponse.slice(0, 25));
+	}
+
 	onMount(() => {
 		handleSearchData('');
 	});
@@ -74,23 +97,20 @@
 
 <main>
 	<div class="input">
-		<input bind:value={$busca} type="text" placeholder="Digite o nome de alguma moeda" />
-		<button on:click={() => handleSearchData($busca)}>Buscar</button>
+		<Autocomplete
+			on:search={(e) => handleGetCryptoOptions(e.detail.value)}
+			on:select={(e) => goto(`/coin/?id=${e.detail.value}`)}
+			options={$cryptoOptions}
+		/>
 	</div>
 	{#if $data.length > 0}
-		<Table
-			{isLoading}
-			{orderBy}
-			{ascOrDesc}
-			data={$data}
-			on:sort={() => handleSearchData($busca)}
-		/>
+		<Table {isLoading} {orderBy} {ascOrDesc} data={$data} on:sort={() => handleSearchData('')} />
 	{:else}
 		<span>Carregando..</span>
 	{/if}
 </main>
 
-<style>
+<style lang="scss">
 	main {
 		display: flex;
 		flex-direction: column;
@@ -107,7 +127,7 @@
 		background: var(--clr-light);
 	}
 
-	main .input {
+	.input {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
@@ -116,45 +136,5 @@
 		gap: 1rem;
 
 		width: 100%;
-	}
-
-	main .input input {
-		width: 100%;
-
-		border: 1px solid #ccc;
-		border-radius: 5px;
-
-		outline: none;
-
-		padding: 0.7rem;
-
-		color: var(--clr-gray700);
-		font-weight: 600;
-		font-size: var(--font-lg);
-	}
-
-	main .input input::placeholder {
-		font-weight: 600;
-		font-size: var(--font-lg);
-	}
-
-	main .input button {
-		border: 1px solid #ccc;
-		border-radius: 5px;
-
-		outline: none;
-
-		text-transform: uppercase;
-
-		padding: 0.5rem;
-		width: 10rem;
-
-		cursor: pointer;
-
-		background: var(--clr-primary);
-		color: var(--clr-gray100);
-
-		font-weight: 600;
-		font-size: var(--font-lg);
 	}
 </style>
