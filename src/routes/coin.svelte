@@ -150,7 +150,11 @@
 			</div>
 		</div>
 		{#if $chartLabels.length > 0 && $chartValues.length > 0 && $isLoading === false}
-			<Graph {chartLabels} {chartValues} label={'Preço de acordo com o período selecionado'} />
+			<Graph
+				{chartLabels}
+				{chartValues}
+				label={`[${$currency}] Preço de acordo com o período selecionado`}
+			/>
 		{/if}
 	{/if}
 </main>
