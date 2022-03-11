@@ -265,7 +265,7 @@
 		font-weight: 700;
 
 		padding: 0.2rem 0.4rem;
-		background-color: var(--clr-gray700);
+		background-color: var(--clr-primary);
 
 		border-radius: var(--br);
 

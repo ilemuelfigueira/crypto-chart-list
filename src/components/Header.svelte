@@ -4,7 +4,7 @@
 
 	import BiMoon from 'svelte-icons-pack/bi/BiMoon';
 	import BiSun from 'svelte-icons-pack/bi/BiSun';
-	import { getContext, setContext } from 'svelte';
+	import { getContext } from 'svelte';
 	const { context } = getContext('isDark');
 	const { isDark, handleChangeTheme } = context;
 </script>
