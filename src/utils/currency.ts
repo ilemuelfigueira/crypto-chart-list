@@ -1,13 +1,9 @@
+import { formatCurrency } from '@coingecko/cryptoformat';
+
 export function formatBrl(value: number): string {
-  return Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  }).format(value);
+	return formatCurrency(value, 'USD', 'en', false);
 }
 
 export function formatUsd(value: number): string {
-  return Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(value);
+	return formatCurrency(value, 'BRL', 'pt-br', false);
 }

@@ -1,13 +1,16 @@
 <script lang="ts">
 	export const ssr = false;
-	import '../app.scss';
 
 	import { writable } from 'svelte/store';
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 
 	import Header from '../components/Header.svelte';
 
-	const isDark = writable<string>('S');
+	const isDark = writable<string>('N');
+
+	setContext('isDark', {
+		isDark: $isDark === 'S'
+	});
 
 	onMount(() => {
 		const storagedIsDark = sessionStorage.getItem('isDark');
@@ -33,6 +36,7 @@
 </div>
 
 <style>
+	@import '../app.module.scss';
 	#app {
 		min-height: 100vh;
 		/* min-width: 100vw; */

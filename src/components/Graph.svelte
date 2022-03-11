@@ -7,9 +7,12 @@
 	export let chartLabels: Writable<string[]> = writable<string[]>([]);
 	export let label = 'Crypto';
 	export let backgroundColor = '#D33A02';
-	export let borderColor = '#D33A02';
+	export let borderColor = '#D33A02aa';
 
-	const { formatCurrency } = getContext('currency');
+	const { isDark } = getContext('isDark');
+	const { formatCurrency = () => '' } = getContext('currency');
+
+	let fontColor = isDark ? '#fff' : '#000';
 
 	let ctx: any;
 	let chartCanvas: HTMLCanvasElement;
@@ -45,7 +48,7 @@
 				},
 				legend: {
 					labels: {
-						fontColor: 'white',
+						fontColor: fontColor,
 						fontSize: 16
 					}
 				},
@@ -53,9 +56,9 @@
 					yAxes: [
 						{
 							ticks: {
-								fontColor: 'white',
-								fontSize: 18,
+								fontColor: fontColor,
 								callback: formatCurrency
+								// fontSize: 18
 								// stepSize: 1
 								// beginAtZero: true
 							}
@@ -64,9 +67,9 @@
 					xAxes: [
 						{
 							ticks: {
-								fontColor: 'white',
-								fontSize: 14
-
+								fontColor: fontColor,
+								fontSize: 8
+								// callback: () => ''
 								// stepSize: 0.5
 								// beginAtZero: true
 							}
@@ -86,7 +89,9 @@
 	});
 </script>
 
-<canvas bind:this={chartCanvas} id="myChart" width="400" />
+<div class="canvas">
+	<canvas bind:this={chartCanvas} id="myChart" height="600" />
+</div>
 
 <style lang="scss">
 	canvas {

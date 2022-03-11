@@ -135,6 +135,9 @@
 </body>
 
 <style lang="scss">
+	th span {
+		color: var(--clr-gray100);
+	}
 	body {
 		width: 100%;
 		max-height: 60vh;
@@ -235,6 +238,8 @@
 		margin-left: 0.5rem;
 
 		text-transform: uppercase;
+
+		color: var(--clr-gray100);
 	}
 
 	[data-label='name'] {

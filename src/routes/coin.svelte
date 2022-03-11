@@ -15,6 +15,7 @@
 	import BiSolidUpArrow from 'svelte-icons-pack/bi/BiSolidUpArrow';
 
 	import Icon from 'svelte-icons-pack/Icon.svelte';
+	import { goto } from '$app/navigation';
 
 	setContext('currency', {
 		formatCurrency
@@ -30,7 +31,7 @@
 	const chartLabels = writable<string[]>([]);
 	const chartValues = writable<number[]>([]);
 
-	const daysOptions = writable<string[]>(['1d', '7d', '14d', '30d']);
+	const daysOptions = writable<string[]>(['1D', '7D', '14D', '30D']);
 	const isLoading = writable<boolean>(false);
 
 	function handleLoadUrlParams() {
@@ -76,6 +77,7 @@
 	}
 
 	async function handleLoadCoin() {
+		if (!$id) return goto('/');
 		await handleLoadCryptoHeader();
 		await handleLoadCryptoChart();
 
@@ -125,7 +127,7 @@
 							data-positive={$crypto.market_data.market_cap_change_percentage_24h > 0 ? 'S' : 'N'}
 						>
 							{$crypto.market_data.market_cap_change_percentage_24h
-								.toPrecision(2)
+								.toPrecision(3)
 								.replace('-', '')}%
 						</span>
 					</div>
@@ -160,6 +162,17 @@
 	main .header {
 		display: flex;
 		justify-content: space-between;
+
+		max-width: 100%;
+		overflow: hidden;
+
+		@media (max-width: 600px) {
+			flex-direction: column-reverse;
+
+			.days {
+				align-self: flex-end;
+			}
+		}
 	}
 
 	.crypto-values .change {
@@ -186,6 +199,10 @@
 
 		width: max-content;
 		height: max-content;
+
+		@media (max-width: 600px) {
+			font-size: var(--font-xl);
+		}
 	}
 
 	.crypto-values {
@@ -252,7 +269,7 @@
 
 		border-radius: var(--br);
 
-		color: var(--clr-font);
+		color: var(--clr-gray100);
 	}
 
 	.days {
@@ -285,6 +302,7 @@
 			margin: 0;
 			height: auto;
 			background: var(--clr-primary);
+			color: var(--clr-gray100);
 		}
 	}
 
