@@ -33,7 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@coingecko/cryptoformat": "^0.4.4",
+		"@coingecko/cryptoformat": "0.4.4",
 		"axios": "0.21.0",
 		"chart.js": "2.6.0",
 		"svelte-icons-pack": "1.4.6"
