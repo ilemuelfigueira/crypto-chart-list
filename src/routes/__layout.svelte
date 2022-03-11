@@ -1,8 +1,10 @@
 <script lang="ts">
+	export const ssr = false;
 	import '../app.scss';
 
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
+
 	import Header from '../components/Header.svelte';
 
 	const isDark = writable<string>('S');

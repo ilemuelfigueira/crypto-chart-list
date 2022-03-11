@@ -40,3 +40,13 @@ export async function getCryptoById(id: string): Promise<Crypto> {
 
 	return data;
 }
+export async function getCryptoOptions(value: string): Promise<Crypto> {
+	const options: AxiosRequestConfig = {
+		method: 'get',
+		url: `/search?query=${value}`
+	};
+
+	const { data } = await api.request<Crypto>(options);
+
+	return data;
+}

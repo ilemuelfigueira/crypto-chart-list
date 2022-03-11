@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { Chart } from 'chart.js';
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 
 	export let chartValues: Writable<number[]> = writable<number[]>([]);
 	export let chartLabels: Writable<string[]> = writable<string[]>([]);
 	export let label = 'Crypto';
+	export let backgroundColor = '#D33A02';
+	export let borderColor = '#D33A02';
+
+	const { formatCurrency } = getContext('currency');
 
 	let ctx: any;
 	let chartCanvas: HTMLCanvasElement;
@@ -14,9 +18,9 @@
 		ctx = chartCanvas.getContext('2d');
 
 		const gradientFill = ctx?.createLinearGradient(0, 0, 0, 500);
-		gradientFill?.addColorStop(0, 'rgb(110,50,166)');
-		gradientFill?.addColorStop(0.5, 'rgb(110,50,166, 0.6)');
-		gradientFill?.addColorStop(1, 'rgb(110,50,166, 0.2)');
+		gradientFill?.addColorStop(0, `${backgroundColor}ff`);
+		gradientFill?.addColorStop(0.5, `${backgroundColor}dd`);
+		gradientFill?.addColorStop(1, `${backgroundColor}55`);
 
 		new Chart(ctx, {
 			type: 'line',
@@ -26,7 +30,7 @@
 					{
 						label: label.toUpperCase(),
 						backgroundColor: gradientFill,
-						borderColor: '#8a2be2',
+						borderColor: `${borderColor}ff`,
 						data: $chartValues,
 						fill: true,
 						tension: 0.1
@@ -34,6 +38,41 @@
 				]
 			},
 			options: {
+				tooltip: {
+					callbacks: {
+						label: formatCurrency
+					}
+				},
+				legend: {
+					labels: {
+						fontColor: 'white',
+						fontSize: 16
+					}
+				},
+				scales: {
+					yAxes: [
+						{
+							ticks: {
+								fontColor: 'white',
+								fontSize: 18,
+								callback: formatCurrency
+								// stepSize: 1
+								// beginAtZero: true
+							}
+						}
+					],
+					xAxes: [
+						{
+							ticks: {
+								fontColor: 'white',
+								fontSize: 14
+
+								// stepSize: 0.5
+								// beginAtZero: true
+							}
+						}
+					]
+				},
 				elements: {
 					line: {
 						tension: 0.1

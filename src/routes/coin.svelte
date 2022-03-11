@@ -2,17 +2,26 @@
 	import { writable, type Writable } from 'svelte/store';
 
 	import Graph from '../components/Graph.svelte';
-	import { formatBrl } from '../utils/currency';
+	import { formatBrl, formatUsd } from '../utils/currency';
 	import type { CryptoChart, Crypto } from '../types/crypto';
 
 	import { page } from '$app/stores';
 
-	import { onMount } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { getCryptoById, getCryptoCharts } from '../services/crypto';
 	import { formatDate } from '../utils/date';
 
+	import BiSolidDownArrow from 'svelte-icons-pack/bi/BiSolidDownArrow';
+	import BiSolidUpArrow from 'svelte-icons-pack/bi/BiSolidUpArrow';
+
+	import Icon from 'svelte-icons-pack/Icon.svelte';
+
+	setContext('currency', {
+		formatCurrency
+	});
+
 	export const id: Writable<string> = writable<string>();
-	export const currency: Writable<string> = writable<'BRL' | 'USD'>('BRL');
+	export const currency: Writable<string> = writable<'BRL' | 'USD'>('USD');
 	export const days: Writable<string> = writable<string>('1d');
 
 	const crypto = writable<Crypto>();
@@ -73,6 +82,14 @@
 		serializeCryptoChart();
 	}
 
+	function formatCurrency(value: number) {
+		if ($currency === 'USD') {
+			return formatUsd(value);
+		}
+
+		return formatBrl(value);
+	}
+
 	onMount(async () => {
 		const urlParamsPromise = handleLoadUrlParams();
 		const coinPromise = handleLoadCoin();
@@ -86,10 +103,32 @@
 		<div class="header">
 			<div class="infos">
 				<div class="rank">RANK #{$crypto.coingecko_rank}</div>
-				<div class="name">{$crypto.id} ({$crypto.symbol})</div>
-				<div class="value">
-					{formatBrl($crypto.market_data.current_price['brl'])}
-					{$crypto.market_data.market_cap_change_24h.toPrecision(2)}%
+				<div class="crypto-info">
+					<img class="logo" src={$crypto.image.thumb} alt="" />
+					<span class="name">{$crypto.name} </span>
+					<span class="symbol">({$crypto.symbol.toUpperCase()})</span>
+				</div>
+				<div class="crypto-values">
+					<span class="value">
+						{formatCurrency($crypto.market_data.current_price[$currency.toLowerCase()])}
+					</span>
+					<div
+						class="change"
+						icon-positive={$crypto.market_data.market_cap_change_percentage_24h > 0 ? 'S' : 'N'}
+					>
+						{#if $crypto.market_data.market_cap_change_percentage_24h > 0}
+							<Icon className="indicator-icon" src={BiSolidUpArrow} />
+						{:else}
+							<Icon className="indicator-icon" src={BiSolidDownArrow} />
+						{/if}
+						<span
+							data-positive={$crypto.market_data.market_cap_change_percentage_24h > 0 ? 'S' : 'N'}
+						>
+							{$crypto.market_data.market_cap_change_percentage_24h
+								.toPrecision(2)
+								.replace('-', '')}%
+						</span>
+					</div>
 				</div>
 			</div>
 
@@ -101,8 +140,7 @@
 						on:click={async () => {
 							days.set(day);
 							isLoading.set(true);
-							await handleLoadCryptoChart();
-							serializeCryptoChart();
+							await handleLoadCoin();
 							isLoading.set(false);
 						}}>{day}</span
 					>
@@ -122,6 +160,99 @@
 	main .header {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	.crypto-values .change {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+
+		text-align: center;
+
+		gap: 0.2rem;
+	}
+
+	.crypto-values .change span {
+		font-size: var(--font-xl);
+		font-weight: 800;
+
+		width: max-content;
+		height: max-content;
+	}
+
+	.crypto-values .value {
+		font-size: var(--font-3xl);
+		font-weight: 800;
+
+		width: max-content;
+		height: max-content;
+	}
+
+	.crypto-values {
+		display: flex;
+		align-items: center;
+
+		gap: 0.4rem;
+
+		padding: 0;
+		margin: 0;
+
+		width: max-content;
+		height: auto;
+	}
+
+	.infos {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+
+		gap: 0.3rem;
+
+		width: max-content;
+		height: max-content;
+	}
+
+	.crypto-info {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+
+		gap: 0.6rem;
+
+		text-align: center;
+
+		width: max-content;
+		height: max-content;
+	}
+
+	.crypto-info .logo {
+		width: 2rem;
+
+		aspect-ratio: 1;
+	}
+
+	.crypto-info .name {
+		font-size: var(--font-xl);
+		font-weight: 600;
+	}
+
+	.rank {
+		width: max-content;
+		height: max-content;
+
+		text-align: center;
+		text-transform: uppercase;
+
+		font-size: var(--font-base);
+		font-weight: 700;
+
+		padding: 0.2rem 0.4rem;
+		background-color: var(--clr-gray700);
+
+		border-radius: var(--br);
+
+		color: var(--clr-font);
 	}
 
 	.days {
@@ -158,6 +289,14 @@
 	}
 
 	[data-selected='S'] {
-		filter: brightness(1.2);
+		filter: brightness(0.8);
+	}
+
+	[icon-positive='S'] {
+		fill: green;
+	}
+
+	[icon-positive='N'] {
+		fill: red;
 	}
 </style>

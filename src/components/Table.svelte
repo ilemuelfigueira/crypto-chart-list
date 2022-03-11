@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { writable, type Writable } from 'svelte/store';
+	import { goto } from '$app/navigation';
 
 	import type { CryptoTable } from '../types/crypto';
 	import { formatBrl } from '../utils/currency';
@@ -74,7 +75,7 @@
 	}
 
 	function goToCoinPage(id: string) {
-		window.location.assign(`/coin?id=${id}`);
+		goto(`/coin?id=${id}`);
 	}
 </script>
 
@@ -226,14 +227,6 @@
 		backdrop-filter: brightness(0.9);
 	}
 
-	[data-positive='S'] {
-		color: green;
-	}
-
-	[data-positive='N'] {
-		color: red;
-	}
-
 	[data-label='symbol'] {
 		font-weight: 900;
 		padding: 0.1rem 0.5rem;
@@ -241,7 +234,6 @@
 
 		margin-left: 0.5rem;
 
-		border-radius: var(--br);
 		text-transform: uppercase;
 	}
 
