@@ -152,7 +152,7 @@
 		cursor: pointer;
 
 		background: var(--clr-primary);
-		color: var(--clr-font);
+		color: var(--clr-gray100);
 
 		font-weight: 600;
 		font-size: var(--font-lg);
