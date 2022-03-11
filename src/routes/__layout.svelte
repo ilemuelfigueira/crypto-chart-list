@@ -22,8 +22,6 @@
 
 	function handleChangeTheme() {
 		isDark.update((old: string) => (old === 'S' ? 'N' : 'S'));
-
-		setContext('isDark', { isDark });
 	}
 
 	onMount(() => {
