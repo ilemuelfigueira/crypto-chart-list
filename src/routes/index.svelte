@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Autocomplete from '../components/Autocomplete.svelte';
 
-	import { onMount } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { writable } from 'svelte/store';
 
 	import Table from '../components/Table.svelte';
@@ -15,6 +15,9 @@
 
 	const orderBy = writable<string>('Capitalização de Mercado');
 	const ascOrDesc = writable<'asc' | 'desc'>('desc');
+
+	const { context: contextCurrency } = getContext('currency');
+	const { currency } = contextCurrency;
 
 	const cryptoOptions = writable<GenericOption[]>([]);
 
@@ -60,7 +63,11 @@
 	async function handleSearchData(search: string = '') {
 		try {
 			isLoading.set(true);
-			const response = await getCryptoData([search], serializeOrderBy($orderBy, $ascOrDesc));
+			const response = await getCryptoData(
+				[search],
+				serializeOrderBy($orderBy, $ascOrDesc),
+				$currency
+			);
 
 			const serializedResponse = searializeCryptoResponseToCryptoTable(response);
 

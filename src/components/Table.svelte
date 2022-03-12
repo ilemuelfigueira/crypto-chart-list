@@ -9,12 +9,15 @@
 	import BiChevronDown from 'svelte-icons-pack/bi/BiChevronDown';
 
 	import Icon from 'svelte-icons-pack/Icon.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import Loading from './LinearLoading.svelte';
 
 	export let orderBy: Writable<string> = writable<string>('Moeda');
 	export let ascOrDesc: Writable<'asc' | 'desc'> = writable<'asc' | 'desc'>('asc');
 	export let isLoading: Writable<boolean> = writable<boolean>(false);
+
+	const { context: currencyContext } = getContext('currency');
+	const { formatCurrency } = currencyContext;
 
 	export let data: CryptoTable[] = [];
 
@@ -37,10 +40,6 @@
 		}
 
 		return false;
-	}
-
-	function handleFormatCurrency(value: number) {
-		return formatBrl(value);
 	}
 
 	function handleChangeOrderBy(order: string) {
@@ -118,15 +117,15 @@
 						</div>
 					</td>
 					<td data-label="symbol">{item.symbol} </td>
-					<td data-label="value">{handleFormatCurrency(item.value)}</td>
+					<td data-label="value">{formatCurrency(item.value)}</td>
 					<td data-label={'1h'} data-positive={isPositive(item['1h']) ? 'S' : 'N'}>{item['1h']}</td>
 					<td data-label={'24h'} data-positive={isPositive(item['24h']) ? 'S' : 'N'}
 						>{item['24h']}</td
 					>
 					<td data-label={'7d'} data-positive={isPositive(item['7d']) ? 'S' : 'N'}>{item['7d']}</td>
-					<td data-label="Volume em 24h">{handleFormatCurrency(item['Volume em 24h'])}</td>
+					<td data-label="Volume em 24h">{formatCurrency(item['Volume em 24h'])}</td>
 					<td data-label="Capitalização de Mercado"
-						>{handleFormatCurrency(item['Capitalização de Mercado'])}</td
+						>{formatCurrency(item['Capitalização de Mercado'])}</td
 					>
 				</tr>
 			{/each}

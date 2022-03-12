@@ -4,11 +4,12 @@ import { api } from './api';
 
 export async function getCryptoData(
 	id: string[] = ['bitcoin', 'ethereum', 'ripple'],
-	orderBy = 'market_cap_desc'
+	orderBy = 'market_cap_desc',
+	currency = 'brl'
 ): Promise<CryptoResponse[]> {
 	const options: AxiosRequestConfig = {
 		method: 'get',
-		url: `/coins/markets?vs_currency=brl&ids=${id.join(
+		url: `/coins/markets?vs_currency=${currency.toLowerCase()}&ids=${id.join(
 			','
 		)}&order=${orderBy}&per_page=100&page=1&sparkline=false&price_change_percentage=1h,24h,7d`
 	};
