@@ -1,9 +1,9 @@
 import { formatCurrency } from '@coingecko/cryptoformat';
 
-export function formatBrl(value: number): string {
+export function formatUsd(value: number): string {
 	return formatCurrency(value, 'USD', 'en', false);
 }
 
-export function formatUsd(value: number): string {
+export function formatBrl(value: number): string {
 	return formatCurrency(value, 'BRL', 'pt-br', false);
 }
