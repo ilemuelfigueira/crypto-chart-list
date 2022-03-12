@@ -7,16 +7,7 @@
 
 	export let placeholder: string = 'Selecione';
 	export let value: Writable<string | number | null> = writable();
-	export let options: GenericOption[] = [
-		{
-			label: 'USD',
-			value: 'USD'
-		},
-		{
-			label: 'BRL',
-			value: 'BRL'
-		}
-	];
+	export let options: GenericOption[] = [];
 
 	const dispatch = createEventDispatcher();
 

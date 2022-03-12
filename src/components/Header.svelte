@@ -12,7 +12,7 @@
 	const { isDark, handleChangeTheme } = isDarkContext;
 
 	const { context: currencyContext } = getContext('currency');
-	const { currency, changeCurrency } = currencyContext;
+	const { currency, currencyOptions, changeCurrency } = currencyContext;
 </script>
 
 <header>
@@ -27,7 +27,11 @@
 		</div>
 
 		<div class="right">
-			<Select value={currency} on:select={(e) => changeCurrency(e.detail.value)} />
+			<Select
+				value={currency}
+				on:select={(e) => changeCurrency(e.detail.value)}
+				options={currencyOptions}
+			/>
 			<button cursor-pointer is-dark={$isDark || 'N'} on:click={() => handleChangeTheme()}>
 				{#if $isDark === 'N'}
 					<Icon className="icon" src={BiSun} />

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { GenericOption } from 'src/types';
+
 	import { onMount, setContext } from 'svelte';
 	import { writable, type Writable } from 'svelte/store';
 
@@ -8,12 +10,23 @@
 	setContext<{
 		context: {
 			currency: Writable<string>;
+			currencyOptions: GenericOption[];
 			formatCurrency: (value: number) => string;
 			changeCurrency;
 		};
 	}>('currency', {
 		context: {
 			currency,
+			currencyOptions: [
+				{
+					label: 'USD',
+					value: 'USD'
+				},
+				{
+					label: 'BRL',
+					value: 'BRL'
+				}
+			],
 			formatCurrency,
 			changeCurrency
 		}
