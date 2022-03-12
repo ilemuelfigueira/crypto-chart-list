@@ -85,8 +85,6 @@
 
 		const serializedResponse = serializeCryptoOptions(response.coins);
 
-		console.log('serializedResponse', serializedResponse);
-
 		cryptoOptions.set(serializedResponse.slice(0, 25));
 	}
 

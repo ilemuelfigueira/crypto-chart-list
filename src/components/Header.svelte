@@ -5,8 +5,14 @@
 	import BiMoon from 'svelte-icons-pack/bi/BiMoon';
 	import BiSun from 'svelte-icons-pack/bi/BiSun';
 	import { getContext } from 'svelte';
-	const { context } = getContext('isDark');
-	const { isDark, handleChangeTheme } = context;
+
+	import Select from './Select.svelte';
+
+	const { context: isDarkContext } = getContext('isDark');
+	const { isDark, handleChangeTheme } = isDarkContext;
+
+	const { context: currencyContext } = getContext('currency');
+	const { currency, changeCurrency } = currencyContext;
 </script>
 
 <header>
@@ -20,7 +26,8 @@
 			</a>
 		</div>
 
-		<div class="theme-switcher">
+		<div class="right">
+			<Select value={currency} on:select={(e) => changeCurrency(e.detail.value)} />
 			<button cursor-pointer is-dark={$isDark || 'N'} on:click={() => handleChangeTheme()}>
 				{#if $isDark === 'N'}
 					<Icon className="icon" src={BiSun} />
@@ -92,6 +99,14 @@
 		& > div {
 			width: 100%;
 		}
+	}
+
+	.right {
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+
+		gap: 1rem;
 	}
 
 	:global .icon {

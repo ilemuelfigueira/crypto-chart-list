@@ -31,8 +31,6 @@
 	$: if ($busca !== '') {
 		search();
 	}
-
-	$: options, console.log('options', options);
 </script>
 
 <div class="auto-complete" on:blur={clearInput}>
@@ -74,7 +72,7 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 
-		margin-top: 4rem;
+		top: 3.7rem;
 
 		padding: 1rem;
 

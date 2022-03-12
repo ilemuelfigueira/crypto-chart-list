@@ -9,7 +9,9 @@
 	export let backgroundColor = '#D33A02';
 	export let borderColor = '#D33a02aa';
 
-	const { formatCurrency = () => '' } = getContext('currency');
+	const { context } = getContext('currency');
+
+	const { formatCurrency } = context;
 
 	let ctx: any;
 	let chartCanvas: HTMLCanvasElement;

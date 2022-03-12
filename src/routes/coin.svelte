@@ -2,12 +2,12 @@
 	import { writable, type Writable } from 'svelte/store';
 
 	import Graph from '../components/Graph.svelte';
-	import { formatBrl, formatUsd } from '../utils/currency';
+
 	import type { CryptoChart, Crypto } from '../types/crypto';
 
 	import { page } from '$app/stores';
 
-	import { onMount, setContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { getCryptoById, getCryptoCharts } from '../services/crypto';
 	import { formatDate } from '../utils/date';
 
@@ -17,12 +17,8 @@
 	import Icon from 'svelte-icons-pack/Icon.svelte';
 	import { goto } from '$app/navigation';
 
-	setContext('currency', {
-		formatCurrency
-	});
-
 	export const id: Writable<string> = writable<string>();
-	export const currency: Writable<string> = writable<'BRL' | 'USD'>('USD');
+
 	export const days: Writable<string> = writable<string>('1D');
 
 	const crypto = writable<Crypto>();
@@ -33,6 +29,9 @@
 
 	const daysOptions = writable<string[]>(['1D', '7D', '14D', '30D']);
 	const isLoading = writable<boolean>(false);
+
+	const { context } = getContext('currency');
+	const { currency, formatCurrency } = context;
 
 	function handleLoadUrlParams() {
 		const query = $page.url.searchParams.get('id');
@@ -82,14 +81,6 @@
 		await handleLoadCryptoChart();
 
 		serializeCryptoChart();
-	}
-
-	function formatCurrency(value: number) {
-		if ($currency === 'USD') {
-			return formatUsd(value);
-		}
-
-		return formatBrl(value);
 	}
 
 	onMount(async () => {
