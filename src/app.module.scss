@@ -1,39 +1,45 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
-
-input:disabled {
-	color: #ccc;
-}
-
-button {
-	color: #333;
-	background-color: #f4f4f4;
-	outline: none;
-}
-
-button:disabled {
-	color: #999;
-}
-
-/* Works on Firefox */
 * {
-	scrollbar-width: thin;
-	scrollbar-color: var(--clr-primary) var(--clr-light);
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+
+	letter-spacing: 0.01rem;
 }
 
-/* Works on Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-	width: 12px;
-	height: 12px;
+/* width */
+::-webkit-scrollbar {
+	width: 0.4rem;
 }
 
-*::-webkit-scrollbar-track {
+/* Track */
+::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
 	background: var(--clr-primary);
 }
 
-*::-webkit-scrollbar-thumb {
-	background-color: var(--clr-light);
-	border-radius: 20px;
-	border: 3px solid var(--clr-primary);
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: var(--clr-primary);
+}
+
+body {
+	background: var(--background);
+	color: var(--text-primary);
+}
+
+button {
+	user-select: none;
+}
+
+body,
+input,
+button,
+textarea {
+	font: 400 16px "Mukta", sans-serif;
 }
 
 /* hide scrollbar but allow scrolling */
@@ -45,23 +51,6 @@ button:disabled {
 
 [hide-scroll="S"]::-webkit-scrollbar {
 	display: none; /* for Chrome, Safari, and Opera */
-}
-
-* {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-
-	letter-spacing: 0.01rem;
-}
-
-body {
-	background: var(--background);
-	color: var(--text-primary);
-}
-
-button {
-	user-select: none;
 }
 
 :root {
@@ -106,21 +95,6 @@ button {
 [dark-theme="S"] {
 	--clr-light: #0b032d;
 	--clr-font: var(--clr-gray100);
-}
-
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
-
-* {
-	font-family: "Mukta", sans-serif;
-	font-weight: 400;
-	padding: 0;
-	color: var(--clr-font);
 }
 
 [tooltip-string][tooltip-align="left"] {

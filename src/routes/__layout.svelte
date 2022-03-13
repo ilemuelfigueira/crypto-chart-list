@@ -6,7 +6,6 @@
 
 	import Header from '../components/Header.svelte';
 	import { isMounting } from '../stores/mount';
-	import CurrencyContext from '../contexts/CurrencyContext.svelte';
 
 	const isDark = writable<string>('N');
 
@@ -39,23 +38,21 @@
 	});
 </script>
 
-<CurrencyContext>
-	{#if $isMounting === false}
-		<div id="app" dark-theme={$isDark}>
-			<Header />
+{#if $isMounting === false}
+	<div id="app" dark-theme={$isDark}>
+		<Header />
 
-			<main>
-				<slot />
-			</main>
+		<main>
+			<slot />
+		</main>
 
-			<footer>
-				<p>
-					Visit <a href="https://github.com/LemuelFigueira">Lemuel Figueira</a> to see more projects
-				</p>
-			</footer>
-		</div>
-	{/if}
-</CurrencyContext>
+		<footer>
+			<p>
+				Visit <a href="https://github.com/LemuelFigueira">Lemuel Figueira</a> to see more projects
+			</p>
+		</footer>
+	</div>
+{/if}
 
 <style>
 	@import '../app.module.scss';

@@ -6,13 +6,8 @@
 	import BiSun from 'svelte-icons-pack/bi/BiSun';
 	import { getContext } from 'svelte';
 
-	import Select from './Select.svelte';
-
 	const { context: isDarkContext } = getContext('isDark');
 	const { isDark, handleChangeTheme } = isDarkContext;
-
-	const { context: currencyContext } = getContext('currency');
-	const { currency, currencyOptions, changeCurrency } = currencyContext;
 </script>
 
 <header>
@@ -21,17 +16,12 @@
 			<a href="/">
 				<div is-dark>
 					<Icon size="36" src={BiSolidStore} />
-					<span>Crypto Market</span>
+					<span>Template</span>
 				</div>
 			</a>
 		</div>
 
 		<div class="right">
-			<Select
-				value={currency}
-				on:select={(e) => changeCurrency(e.detail.value)}
-				options={currencyOptions}
-			/>
 			<button cursor-pointer is-dark={$isDark || 'N'} on:click={() => handleChangeTheme()}>
 				{#if $isDark === 'N'}
 					<Icon className="icon" src={BiSun} />
